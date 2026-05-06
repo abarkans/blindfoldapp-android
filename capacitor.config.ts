@@ -5,7 +5,8 @@ const config: CapacitorConfig = {
   appName: 'Blindfold',
   webDir: 'dist',
   server: {
-    allowNavigation: ['blindfolddate.com', '*.blindfolddate.com'],
+    url: 'https://blindfolddate.com',
+    cleartext: false,
   },
   android: {
     backgroundColor: '#0a0a0a',
