@@ -5,8 +5,8 @@ const config: CapacitorConfig = {
   appName: 'Blindfold',
   webDir: 'dist',
   server: {
-    url: 'https://blindfolddate.com',
-    cleartext: false,
+    url: 'http://10.0.2.2:3000/app-intro',
+    cleartext: true,
   },
   android: {
     backgroundColor: '#0a0a0a',
