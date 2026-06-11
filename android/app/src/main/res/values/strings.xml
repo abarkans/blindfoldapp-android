@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Blindfold</string>
-    <string name="title_activity_main">Blindfold</string>
+    <string name="app_name">BlindfoldDate</string>
+    <string name="title_activity_main">BlindfoldDate</string>
     <string name="package_name">com.blindfolddate.app</string>
     <string name="custom_url_scheme">com.blindfolddate.app</string>
 </resources>
