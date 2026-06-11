@@ -11,21 +11,21 @@ const config: CapacitorConfig = {
     ...(devUrl ? { cleartext: true } : {}),
   },
   android: {
-    backgroundColor: '#0a0a0a',
+    backgroundColor: '#000000',
   },
   plugins: {
     SplashScreen: {
       launchShowDuration: 3000,
       launchAutoHide: false,
       launchFadeOutDuration: 500,
-      backgroundColor: '#0a0a0a',
+      backgroundColor: '#000000',
       splashFullScreen: true,
       splashImmersive: true,
       showSpinner: false,
     },
     StatusBar: {
       style: 'DARK',
-      backgroundColor: '#0a0a0a',
+      backgroundColor: '#000000',
     },
   },
 };
