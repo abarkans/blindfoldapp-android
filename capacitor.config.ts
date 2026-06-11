@@ -1,19 +1,23 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
+const devUrl = process.env.CAP_DEV_URL;
+
 const config: CapacitorConfig = {
   appId: 'com.blindfolddate.app',
-  appName: 'Blindfold',
+  appName: 'BlindfoldDate',
   webDir: 'dist',
   server: {
-    url: 'http://10.0.2.2:3000/app-intro',
-    cleartext: true,
+    url: devUrl || 'https://blindfolddate.com/app-intro',
+    ...(devUrl ? { cleartext: true } : {}),
   },
   android: {
     backgroundColor: '#0a0a0a',
   },
   plugins: {
     SplashScreen: {
-      launchShowDuration: 0,
+      launchShowDuration: 2000,
+      launchAutoHide: true,
+      launchFadeOutDuration: 300,
       backgroundColor: '#0a0a0a',
     },
     StatusBar: {
