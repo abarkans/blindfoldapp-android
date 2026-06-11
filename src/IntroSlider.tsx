@@ -1,28 +1,4 @@
-import { useState, useRef } from 'react'
-
-const SLIDES = [
-  {
-    icon: '🔮',
-    title: 'Stop Planning.',
-    subtitle: 'Just Show Up.',
-    body: 'Tell us your interests once. We find real nearby venues, craft your date story, and handle every detail.',
-    accent: '#f43f5e',
-  },
-  {
-    icon: '✨',
-    title: 'Real Places.',
-    subtitle: 'Curated for You.',
-    body: 'AI picks hidden gem venues based on your vibe, budget, and location — with ratings ≥ 4.0 only.',
-    accent: '#8b5cf6',
-  },
-  {
-    icon: '🏆',
-    title: 'Level Up',
-    subtitle: 'Together.',
-    body: 'Earn XP, unlock badges, and build your couple\'s date history. Every date is a new chapter.',
-    accent: '#f43f5e',
-  },
-]
+import Button from './Button'
 
 interface Props {
   onGetStarted: () => void
@@ -30,65 +6,45 @@ interface Props {
 }
 
 export default function IntroSlider({ onGetStarted, onSignIn }: Props) {
-  const [current, setCurrent] = useState(0)
-  const touchStartX = useRef<number | null>(null)
-
-  function handleTouchStart(e: React.TouchEvent) {
-    touchStartX.current = e.touches[0].clientX
-  }
-
-  function handleTouchEnd(e: React.TouchEvent) {
-    if (touchStartX.current === null) return
-    const delta = touchStartX.current - e.changedTouches[0].clientX
-    if (delta > 50) setCurrent(c => Math.min(c + 1, SLIDES.length - 1))
-    else if (delta < -50) setCurrent(c => Math.max(c - 1, 0))
-    touchStartX.current = null
-  }
-
-  const slide = SLIDES[current]
-
   return (
-    <div
-      style={styles.root}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* Slide content */}
-      <div style={styles.content} key={current}>
-        <div style={{ ...styles.iconWrap, background: `${slide.accent}18` }}>
-          <span style={styles.icon}>{slide.icon}</span>
+    <div style={styles.root}>
+      {/* Video background */}
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        poster="/hero-video-poster.webp"
+        style={styles.video}
+      >
+        <source src="/hero-video.webm" type="video/webm" />
+        <source src="/hero-video-small.mp4" type="video/mp4" />
+      </video>
+
+      {/* Dark overlay */}
+      <div style={styles.overlay} />
+
+      {/* Content */}
+      <div style={styles.content}>
+        {/* Icon top */}
+        <div style={styles.logoWrap}>
+          <img src="/icon.png" alt="BlindfoldDate" style={styles.logo} />
         </div>
 
-        <h1 style={styles.title}>{slide.title}</h1>
-        <h2 style={{ ...styles.subtitle, color: slide.accent }}>{slide.subtitle}</h2>
-        <p style={styles.body}>{slide.body}</p>
-      </div>
+        {/* Tagline near buttons */}
+        <div style={styles.textWrap}>
+          <div>
+            <h1 style={styles.title}>Date night, decided.</h1>
+            <h2 style={styles.subtitle}>Just show up.</h2>
+          </div>
+          <p style={styles.body}>A mystery date, planned for you both.</p>
+        </div>
 
-      {/* Dots */}
-      <div style={styles.dots}>
-        {SLIDES.map((_, i) => (
-          <div
-            key={i}
-            style={{
-              ...styles.dot,
-              background: i === current ? slide.accent : '#ffffff22',
-              width: i === current ? 24 : 8,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Buttons */}
-      <div style={styles.buttonGroup}>
-        <button
-          style={{ ...styles.primaryBtn, background: slide.accent }}
-          onClick={onGetStarted}
-        >
-          Get Started
-        </button>
-        <button style={styles.secondaryBtn} onClick={onSignIn}>
-          Sign In
-        </button>
+        {/* Buttons */}
+        <div style={styles.buttonGroup}>
+          <Button onClick={onGetStarted}>Get Started</Button>
+          <Button variant="secondary" onClick={onSignIn}>Sign In</Button>
+        </div>
       </div>
     </div>
   )
@@ -96,103 +52,90 @@ export default function IntroSlider({ onGetStarted, onSignIn }: Props) {
 
 const styles: Record<string, React.CSSProperties> = {
   root: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100dvh',
-    padding: '0 32px',
-    background: '#0a0a0a',
-    userSelect: 'none',
     position: 'relative',
+    height: '100dvh',
+    background: '#0a0a0a',
+    overflow: 'hidden',
+  },
+  video: {
+    position: 'absolute',
+    inset: 0,
+    width: '100%',
+    height: '100%',
+    objectFit: 'cover',
+    zIndex: 0,
+  },
+  overlay: {
+    position: 'absolute',
+    inset: 0,
+    background: 'rgba(0,0,0,0.8)',
+    zIndex: 1,
   },
   content: {
+    position: 'relative',
+    zIndex: 2,
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
-    gap: 16,
-    flex: 1,
-    justifyContent: 'center',
-    paddingTop: 48,
+    height: '100%',
+    padding: '0 16px',
   },
-  iconWrap: {
-    width: 96,
-    height: 96,
-    borderRadius: 28,
+  logoWrap: {
+    paddingTop: 'max(48px, env(safe-area-inset-top, 48px))',
     display: 'flex',
-    alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 8,
   },
-  icon: {
-    fontSize: 48,
-    lineHeight: 1,
+  logo: {
+    width: 80,
+    height: 80,
+    objectFit: 'contain' as const,
+  },
+  textWrap: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+    gap: 8,
+    textAlign: 'center',
+    paddingBottom: 48,
   },
   title: {
     color: '#ffffff',
-    fontSize: 36,
+    fontSize: 40,
+    fontWeight: 700,
+    letterSpacing: -1,
+    lineHeight: 1,
+  },
+  subtitle: {
+    fontSize: 40,
     fontWeight: 700,
     letterSpacing: -1,
     lineHeight: 1.1,
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  },
-  subtitle: {
-    fontSize: 32,
-    fontWeight: 700,
-    letterSpacing: -0.5,
-    lineHeight: 1.1,
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+    background: 'linear-gradient(135deg, #fb7185 0%, #c026d3 45%, #8b5cf6 100%)',
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    backgroundClip: 'text',
   },
   body: {
-    color: '#ffffffaa',
+    color: 'rgba(255,255,255,0.7)',
     fontSize: 16,
     lineHeight: 1.6,
-    maxWidth: 300,
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-  },
-  dots: {
-    display: 'flex',
-    gap: 6,
-    alignItems: 'center',
-    marginBottom: 24,
-  },
-  dot: {
-    height: 8,
-    borderRadius: 4,
-    transition: 'all 0.25s ease',
   },
   buttonGroup: {
     width: '100%',
-    maxWidth: 340,
     display: 'flex',
     flexDirection: 'column',
     gap: 12,
     paddingBottom: 'max(32px, env(safe-area-inset-bottom, 32px))',
   },
-  primaryBtn: {
-    width: '100%',
-    padding: '18px 0',
-    borderRadius: 16,
-    border: 'none',
-    color: '#ffffff',
-    fontSize: 17,
-    fontWeight: 600,
-    cursor: 'pointer',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-    transition: 'opacity 0.15s ease',
+  consent: {
+    fontSize: 11,
+    color: 'rgba(255,255,255,0.3)',
+    textAlign: 'center',
+    lineHeight: 1.6,
+    paddingTop: 4,
   },
-  secondaryBtn: {
-    width: '100%',
-    padding: '16px 0',
-    borderRadius: 16,
-    border: '1.5px solid #ffffff22',
-    background: 'transparent',
-    color: '#ffffffcc',
-    fontSize: 17,
-    fontWeight: 500,
-    cursor: 'pointer',
-    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-    transition: 'opacity 0.15s ease',
+  consentLink: {
+    color: 'rgba(255,255,255,0.5)',
+    textDecoration: 'underline',
   },
 }

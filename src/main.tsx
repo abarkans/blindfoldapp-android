@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 
-const WEB_URL = 'https://blindfolddate.com'
+const WEB_URL = import.meta.env.VITE_WEB_URL || 'https://blindfolddate.com'
 
 const forcedIntro = new URLSearchParams(window.location.search).get('signout') === '1'
 
