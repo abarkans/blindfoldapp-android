@@ -8,6 +8,7 @@ const config: CapacitorConfig = {
   webDir: 'dist',
   server: {
     url: devUrl || 'https://blindfolddate.com/app-intro',
+    allowNavigation: ['blindfolddate.com'],
     ...(devUrl ? { cleartext: true } : {}),
   },
   android: {
